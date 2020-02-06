@@ -26,9 +26,10 @@ int main(int argc, char *argv[])
 
   std::ifstream fs;
   fs.open(argv[1], std::ifstream::in);
-  char line[1024];
+  char line[2048];
   int data;
 
+std::string test;
   size_t points;
   int numOfPizzas;
 
@@ -40,11 +41,14 @@ int main(int argc, char *argv[])
 
   timeTaken = clock();
 
-  while (fs.getline(line, 1024, ' '))
-  {
-    std::cout << line << '\n';
-    w.push_back((*line));
-  }
+  int c;
+  std::string str;
+
+
+    while(fs.getline(line,1024,' '))
+    {
+       w.push_back(atoi(line));
+    }
 
   timeTaken -= clock();
   float totalTime = (float)timeTaken / CLOCKS_PER_SEC;
@@ -57,29 +61,7 @@ int main(int argc, char *argv[])
   for (int i = 0; i < w.size(); ++i)
     std::cout << "w[" << i << "] = " << w[i] << '\n';
 
-  row.resize(numOfPizzas + 1);
-
-  for (int i = 0; i < numOfPizzas + 1; ++i)
-    row[i].resize(points + 1, 0);
-
-  for (int i = 1; i <= numOfPizzas; ++i)
-  {
-    for (size_t j = 0; j <= points; ++j)
-    {
-      if (w[i] > j)
-        row[i][j] = row[i - 1][j];
-      else
-        row[i][j] = std::max(row[i - 1][j], (v[i] + row[i - 1][j - w[i]]));
-    }
-  }
-
-  for (int i = 0; i < numOfPizzas + 1; ++i)
-  {
-    for (int j = 0; j < points + 1; ++j)
-      std::cout << "[" << i << "][" << j << "] = " << row[i][j] << '\n';
-  }
-
-  std::cout << "result: " << row[numOfPizzas][points];
-
+  fs.close();
+ 
   return 0;
 }
